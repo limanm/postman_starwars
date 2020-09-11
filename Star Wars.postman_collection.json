@@ -1,0 +1,739 @@
+{
+	"info": {
+		"_postman_id": "ac11e213-c4b7-4780-a325-b118ff24137c",
+		"name": "Star Wars",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Response Body, Heade and Status checking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fc76e859-3d8f-4871-b2c8-42e8a0020e0c",
+						"exec": [
+							"// correct response format JSON\r",
+							"pm.test(\"Correct response format JSON\", function(){\r",
+							"    pm.response.to.have.jsonBody();\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//we have all declaired fields in response\r",
+							"pm.test(\"All Declaired fileds are shown in response\", function()  {\r",
+							"const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"people\");\r",
+							"    pm.expect(jsonData).to.have.property(\"films\");\r",
+							"    pm.expect(jsonData).to.have.property(\"planets\");\r",
+							"    pm.expect(jsonData).to.have.property(\"species\");\r",
+							"    pm.expect(jsonData).to.have.property(\"starships\");\r",
+							"    pm.expect(jsonData).to.have.property(\"vehicles\");\r",
+							"});\r",
+							"\r",
+							"//fields value is not null\r",
+							"pm.test(\"Fields value is not null\", function(){\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.expect(jsonData.people).not.equal(null);\r",
+							"pm.expect(jsonData.films).not.equal(null);\r",
+							"pm.expect(jsonData.species).not.equal(null);\r",
+							"pm.expect(jsonData.planets).not.equal(null);\r",
+							"pm.expect(jsonData.starships).not.equal(null);\r",
+							"pm.expect(jsonData.vehicles).not.equal(null);\r",
+							"});\r",
+							"\r",
+							"//Check values is not empty\r",
+							"pm.test(\"Fields value is not empty\", function(){\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.expect(jsonData.people).not.equal(\"\");\r",
+							"pm.expect(jsonData.films).not.equal(\"\");\r",
+							"pm.expect(jsonData.species).not.equal(\"\");\r",
+							"pm.expect(jsonData.planets).not.equal(\"\");\r",
+							"pm.expect(jsonData.starships).not.equal(\"\");\r",
+							"pm.expect(jsonData.vehicles).not.equal(\"\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Message Status OK\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"//time\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://swapi.dev/api/",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"dev"
+					],
+					"path": [
+						"api",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schema validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "911fb292-b55a-4f37-a5f8-a5fcc9e4202a",
+						"exec": [
+							"//const jsonData = pm.response.json();\r",
+							"//const jsonData = pm.response.json();\r",
+							"//var jsonData = JSON.parse(responseBody);\r",
+							"//var jsonData = pm.response.json();\r",
+							"//const jsonData = pm.response.json();\r",
+							"//const jsonData = JSON.parse(responseBody);\r",
+							"//var responseJson = pm.response.json();\r",
+							"const schema = {\r",
+							"    //specify type of object\r",
+							"\"type\": \"object\",\r",
+							"    //specify required properties\r",
+							"\"required\": [\"people\",\"planets\",\"films\",\"species\",\"vehicles\",\"starships\"],\r",
+							"    //decribe the properties\r",
+							"     \"properties\": {\r",
+							"         \"people\":{\"type\":\"string\"},\r",
+							"         \"planets\":{\"type\":\"string\"},\r",
+							"         \"films\":{\"type\":\"string\"},\r",
+							"         \"species\":{\"type\":\"string\"},\r",
+							"         \"vehicles\":{\"type\":\"string\"},\r",
+							"         \"starships\":{\"type\":\"string\"}\r",
+							"     }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"JSON SCHEMA is correct\", function() {\r",
+							"   pm.response.to.have.jsonSchema(schema);\r",
+							"    //pm.expect(tv4.validate(jsonData,schema)).to.be.true;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://swapi.dev/api/",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"dev"
+					],
+					"path": [
+						"api",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schema validation People",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "df24751d-8463-4f61-a15d-84b05614d0b0",
+						"exec": [
+							"//const jsonData = pm.response.json();\r",
+							"//const jsonData = pm.response.json();\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"//var jsonData = pm.response.json();\r",
+							"//const jsonData = pm.response.json();\r",
+							"//const jsonData = JSON.parse(responseBody);\r",
+							"//var responseJson = pm.response.json();\r",
+							"\r",
+							"const schema = {\r",
+							"    //specify type of object\r",
+							"\"type\": \"object\",\r",
+							"    //specify required properties\r",
+							"\"required\": [\"name\",\"gender\",\"homeworld\"],\r",
+							"    //decribe the properties\r",
+							"     \"properties\": {\r",
+							"         \"name\":{\"type\":\"string\"},\r",
+							"         \"birth_year\":{\"type\":\"string\"},\r",
+							"         \"eye_color\":{\"type\":\"string\"},\r",
+							"         \"gender\":{\"type\":\"string\"},\r",
+							"         \"hair_color\":{\"type\":\"string\"},\r",
+							"         \"height\":{\"type\":\"string\"},\r",
+							"         \"mass\":{\"type\":\"string\"},\r",
+							"         \"skin_color\":{\"type\":\"string\"},\r",
+							"         \"homeworld\":{\"type\":\"string\"},\r",
+							"         \"films\":{\r",
+							"             \"type\":\"array\",\r",
+							"             \"items\":{\"type\":\"string\"}\r",
+							"         },\r",
+							"         \"species\":{\r",
+							"             \"type\":\"array\",\r",
+							"             \"items\":{\"type\":\"string\"}\r",
+							"             },\r",
+							"         \"vehicles\":{\r",
+							"             \"type\":\"array\",\r",
+							"             \"items\":{\"type\":\"string\"}\r",
+							"             },\r",
+							"         \"starships\":{\r",
+							"             \"type\":\"array\",\r",
+							"             \"items\":{\"type\":\"string\"}\r",
+							"             },\r",
+							"         \"url\":{\"type\":\"string\"},\r",
+							"         \"created\":{\"type\":\"string\"},\r",
+							"         \"edited\":{\"type\":\"string\"}\r",
+							"     }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"JSON SCHEMA for People is correct\", function() {\r",
+							"   //pm.response.to.have.jsonSchema(schema);\r",
+							"    pm.expect(tv4.validate(jsonData,schema)).to.be.true;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://swapi.dev/api/people/1",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"dev"
+					],
+					"path": [
+						"api",
+						"people",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schema validation People with Mock Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "28ffd665-f350-48ea-8a86-ad70fff16bf2",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://57cce90c-db85-4ae9-b32f-d7b5e2bde2c4.mock.pstmn.io",
+					"protocol": "https",
+					"host": [
+						"57cce90c-db85-4ae9-b32f-d7b5e2bde2c4",
+						"mock",
+						"pstmn",
+						"io"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Schema validation People with Mock Server",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://57cce90c-db85-4ae9-b32f-d7b5e2bde2c4.mock.pstmn.io",
+							"protocol": "https",
+							"host": [
+								"57cce90c-db85-4ae9-b32f-d7b5e2bde2c4",
+								"mock",
+								"pstmn",
+								"io"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 10 Sep 2020 13:45:41 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "x-srv-trace",
+							"value": "v=1;t=d634a5b9f94fc7cb"
+						},
+						{
+							"key": "x-srv-span",
+							"value": "v=1;s=85bced615677941d"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "120"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "118"
+						},
+						{
+							"key": "X-RateLimit-Reset",
+							"value": "1599745590"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"a4-7hO0T/XLq3TuFViTu2ZVQQdIY+A\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": {\n        \"name\": \"message success\",\n        \"message\": \"To mock this request add an example response for the mock server to return.\",\n        \"header\": \"You need an example\"\n    }\n}"
+				},
+				{
+					"name": "Schema validation People with Mock Server",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"Maryna\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://57cce90c-db85-4ae9-b32f-d7b5e2bde2c4.mock.pstmn.io/action",
+							"protocol": "https",
+							"host": [
+								"57cce90c-db85-4ae9-b32f-d7b5e2bde2c4",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"action"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Maryna",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 10 Sep 2020 13:49:27 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "x-srv-trace",
+							"value": "v=1;t=a54861ac1c84d741"
+						},
+						{
+							"key": "x-srv-span",
+							"value": "v=1;s=4370bc7452824222"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "120"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "119"
+						},
+						{
+							"key": "X-RateLimit-Reset",
+							"value": "1599745827"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"96-S/5iQ2y1qqIInh5BwoPc+chvDJU\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": {\n        \"name\": \"Maryna\",\n        \"message\": \"Double check your method and the request path and try again.\",\n        \"header\": \"No matching requests\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Schema validation People with Mock Server Name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "28ffd665-f350-48ea-8a86-ad70fff16bf2",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Maryna\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://57cce90c-db85-4ae9-b32f-d7b5e2bde2c4.mock.pstmn.io/action",
+					"protocol": "https",
+					"host": [
+						"57cce90c-db85-4ae9-b32f-d7b5e2bde2c4",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"action"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Maryna",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Schema validation People with Mock Server",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://57cce90c-db85-4ae9-b32f-d7b5e2bde2c4.mock.pstmn.io",
+							"protocol": "https",
+							"host": [
+								"57cce90c-db85-4ae9-b32f-d7b5e2bde2c4",
+								"mock",
+								"pstmn",
+								"io"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 10 Sep 2020 13:45:41 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "x-srv-trace",
+							"value": "v=1;t=d634a5b9f94fc7cb"
+						},
+						{
+							"key": "x-srv-span",
+							"value": "v=1;s=85bced615677941d"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "120"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "118"
+						},
+						{
+							"key": "X-RateLimit-Reset",
+							"value": "1599745590"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"a4-7hO0T/XLq3TuFViTu2ZVQQdIY+A\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": {\n        \"name\": \"message success\",\n        \"message\": \"To mock this request add an example response for the mock server to return.\",\n        \"header\": \"You need an example\"\n    }\n}"
+				},
+				{
+					"name": "Schema validation People with Mock Server",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"Maryna\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://57cce90c-db85-4ae9-b32f-d7b5e2bde2c4.mock.pstmn.io/action",
+							"protocol": "https",
+							"host": [
+								"57cce90c-db85-4ae9-b32f-d7b5e2bde2c4",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"action"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Maryna",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 10 Sep 2020 13:49:27 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "x-srv-trace",
+							"value": "v=1;t=a54861ac1c84d741"
+						},
+						{
+							"key": "x-srv-span",
+							"value": "v=1;s=4370bc7452824222"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "120"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "119"
+						},
+						{
+							"key": "X-RateLimit-Reset",
+							"value": "1599745827"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"96-S/5iQ2y1qqIInh5BwoPc+chvDJU\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": {\n        \"name\": \"Maryna\",\n        \"message\": \"Double check your method and the request path and try again.\",\n        \"header\": \"No matching requests\"\n    }\n}"
+				}
+			]
+		}
+	],
+	"protocolProfileBehavior": {}
+}
